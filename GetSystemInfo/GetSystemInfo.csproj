@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <!--<TargetFramework>netcoreapp3.0</TargetFramework>-->
+    <!--<TargetFramework>net5.0-windows10.0.19041.0</TargetFramework>-->
+    <TargetFrameworks>netcoreapp3.0;net5.0-windows10.0.18362</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--<PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.19041.1" />-->
+    <PackageReference Condition="'$(TargetFramework)' == 'netcoreapp3.0'" Include="Microsoft.Windows.SDK.Contracts" Version="10.0.19041.1" />
+    <PackageReference Condition="'$(TargetFramework)' == 'net5.0-windows10.0.19041.0'" Include="Microsoft.Windows.CsWinRT" Version="0.1.0-prerelease.200826.1" />
+  </ItemGroup>
+
+</Project>
