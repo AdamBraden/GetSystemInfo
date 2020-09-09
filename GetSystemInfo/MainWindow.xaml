@@ -5,31 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GetSystemInfo"
         mc:Ignorable="d"
-        Title="System Inventory" Height="350" Width="1000">
+        Title="System Inventory" Height="475" Width="1200">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
-            <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0" Orientation="Horizontal">
-            <StackPanel Orientation="Vertical" Width="325">
-                <Button Click="Login_Click" Content=" Login " Height ="50" Width="220" Margin="10,10,10,10"/>
-                <Image x:Name="imagePreview" Stretch="Uniform" Height="250" Width="300"/>
-            </StackPanel>
+        <StackPanel Grid.Column="0">
+            <Image x:Name="imagePreview" Margin="10,0,10,0" Stretch="Uniform" Height="350" Width="400"/>
+            <Button Click="TakePicture_Click" Content=" Take Picture " Height ="50" Width="220" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
         </StackPanel>
         <StackPanel Grid.Column="1">
-            <Label FontWeight="Bold">System Info</Label>
-            <TextBlock Height="225" Margin="10,0,10,0" Name="SystemInfo"></TextBlock>
-            <Button Content="Get System Info" HorizontalAlignment="Center" Height="50" VerticalAlignment="Top" Width="220" Click="Button_Click" />
+            <TextBlock Height="350" Margin="10,0,10,0" Name="SystemInfo" FontSize="14"></TextBlock>
+            <Button Click="SystemInfo_Click" Content="Get System Info" Height="50" Width="220" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
         </StackPanel>
-        <StackPanel Grid.Column="2">
-            <Label FontWeight="Bold">Display Info</Label>
-            <TextBlock Height="225" Margin="10,0,10,0" Name="DisplayInfo"></TextBlock>
-            <Button Content="Get Display Info" HorizontalAlignment="Center" Height="50"  VerticalAlignment="Top" Width="220" Click="Button_Click_1" />
-        </StackPanel>
-
-
     </Grid>
     
 </Window>

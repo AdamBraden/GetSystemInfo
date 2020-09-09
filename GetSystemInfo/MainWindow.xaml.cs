@@ -37,76 +37,59 @@ namespace GetSystemInfo
             InitializeComponent();
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
-        {
-            var sb = new StringBuilder();
-
-
-            //Get System Identifier
-            var systemId = SystemIdentification.GetSystemIdForPublisher();
-            sb.Append($"SystemId ({systemId.Source})\n {CryptographicBuffer.EncodeToHexString(systemId.Id).ToUpper()}");
-
-            var attrNames = new List<string>{ "DeviceFamily", "OSVersionFull", "FlightRing" };
-            var attrData = await AnalyticsInfo.GetSystemPropertiesAsync(attrNames);
-
-            foreach (KeyValuePair<string, string> attr in attrData)
-            {
-                sb.Append($"\n{attr.Key}={attr.Value}");
-            }
-            SystemInfo.Text = sb.ToString();
-        }
-
-        private async void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            var sb = new StringBuilder();
-
-            var devinfoDisplays = await Windows.Devices.Enumeration.DeviceInformation.FindAllAsync(DisplayMonitor.GetDeviceSelector());
-
-            foreach (var devInfo in devinfoDisplays)
-            {
-                var displayMonitor = await DisplayMonitor.FromInterfaceIdAsync(devInfo.Id);
-                sb.Append($"{displayMonitor.DisplayName}\n{displayMonitor.DeviceId}\n{displayMonitor.PhysicalConnector}\n{displayMonitor.PhysicalSizeInInches}");
-            }
-            DisplayInfo.Text = sb.ToString();
-            
-        }
-
-        private async void Login_Click(object sender, RoutedEventArgs e)
+        private async void TakePicture_Click(object sender, RoutedEventArgs e)
         {
             //Initialize Camera
             captureManager = new MediaCapture();
             await captureManager.InitializeAsync();
 
-            // Use Windows Hello - Pin
-            // Request the logged on user's consent via fingerprint swipe.
-            var userMessage = "Please provide Pin Code verification.";
+            //set the format
+            ImageEncodingProperties imgFormat = ImageEncodingProperties.CreateJpeg();
 
-            IntPtr hWnd = new WindowInteropHelper(this).Handle;
-            var consentResult = await UserConsentVerifierInterop.RequestVerificationForWindowAsync(hWnd, userMessage);
-            //var consentResult = await UserConsentVerifier.RequestVerificationAsync(userMessage);
+            // create storage file in local app storage
+            StorageFile file = await KnownFolders.CameraRoll.CreateFileAsync("TestPhoto.jpg", CreationCollisionOption.GenerateUniqueName);
 
-            if (consentResult == Windows.Security.Credentials.UI.UserConsentVerificationResult.Verified)
-            {
-                ImageEncodingProperties imgFormat = ImageEncodingProperties.CreateJpeg();
+            // take photo
+            await captureManager.CapturePhotoToStorageFileAsync(imgFormat, file);
 
-                // create storage file in local app storage
-                StorageFile file = await KnownFolders.CameraRoll.CreateFileAsync("TestPhoto.jpg", CreationCollisionOption.GenerateUniqueName);
+            // Get photo as a BitmapImage
+            BitmapImage bmpImage = new BitmapImage(new Uri(file.Path));
 
-                // take photo
-                await captureManager.CapturePhotoToStorageFileAsync(imgFormat, file);
-
-                // Get photo as a BitmapImage
-                BitmapImage bmpImage = new BitmapImage(new Uri(file.Path));
-
-                // imagePreview is a <Image> object defined in XAML
-                imagePreview.Source = bmpImage;
-            }
-            else
-            {
-                Debug.WriteLine("Pin code error!");
-            
-            }
+            // imagePreview is a <Image> object defined in XAML
+            imagePreview.Source = bmpImage;
         }
 
+        private async void SystemInfo_Click(object sender, RoutedEventArgs e)
+        {
+            var sb = new StringBuilder();
+
+            //Get System Identifier
+            var systemId = SystemIdentification.GetSystemIdForPublisher();
+            
+            //Get OS Flighting info
+            var attrNames = new List<string>{ "DeviceFamily", "OSVersionFull", "FlightRing" };
+            var attrData = await AnalyticsInfo.GetSystemPropertiesAsync(attrNames);
+
+            //Format output
+            sb.Append($"\nSystemId: ({systemId.Source})\n {CryptographicBuffer.EncodeToHexString(systemId.Id).ToUpper().Substring(0,10)}\n");
+            sb.Append("\nWindows Build Info:");
+            foreach (KeyValuePair<string, string> attr in attrData)
+            {
+                sb.Append($"\n{attr.Key}={attr.Value}");
+            }
+
+            //Get info about current DisplayMonitor
+            var devinfoDisplays = await Windows.Devices.Enumeration.DeviceInformation.FindAllAsync(DisplayMonitor.GetDeviceSelector());
+
+            //Query specific values and display them
+            sb.Append("\n\nDisplay Info:\n");
+            foreach (var devInfo in devinfoDisplays)
+            {
+                var displayMonitor = await DisplayMonitor.FromInterfaceIdAsync(devInfo.Id);
+                sb.Append($" Name:{displayMonitor.DisplayName}\n DeviceId: {displayMonitor.DeviceId}\n Connector: {displayMonitor.PhysicalConnector}\n Size: {displayMonitor.PhysicalSizeInInches}");
+            }
+
+            SystemInfo.Text = sb.ToString();
+        }
     }
 }
