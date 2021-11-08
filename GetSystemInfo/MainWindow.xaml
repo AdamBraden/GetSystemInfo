@@ -5,17 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GetSystemInfo"
         mc:Ignorable="d"
-        Title="System Inventory" Height="475" Width="1200">
+        Title="System Inventory" Height="450" Width="600">
     <Grid>
-        <Grid.ColumnDefinitions>
+        <!--<Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0">
             <Image x:Name="imagePreview" Margin="10,0,10,0" Stretch="Uniform" Height="350" Width="400"/>
             <Button Click="TakePicture_Click" Content=" Take Picture " Height ="50" Width="220" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-        </StackPanel>
-        <StackPanel Grid.Column="1">
+        </StackPanel>-->
+        <StackPanel> <!--Grid.Column="1">-->
             <TextBlock Height="350" Margin="10,0,10,0" Name="SystemInfo" FontSize="14"></TextBlock>
             <Button Click="SystemInfo_Click" Content="Get System Info" Height="50" Width="220" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
         </StackPanel>

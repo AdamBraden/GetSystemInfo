@@ -1,21 +1,18 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>netcoreapp3.1;net5.0-windows10.0.19041.0</TargetFrameworks>
+    <TargetFramework>net5.0-windows10.0.19041.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <Platforms>x86;x64</Platforms>
+    <RuntimeIdentifiers>win10-x86;win10-x64</RuntimeIdentifiers>
     <UseWPF>true</UseWPF>
+    <!-- Tell WinAppSDK that its an unpackaged app and intialize access to the Windows App SDK -->
+    <!--<WindowsPackageType>None</WindowsPackageType>-->
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Condition="'$(TargetFramework)' == 'netcoreapp3.1'" Include="Microsoft.Windows.SDK.Contracts" Version="10.0.19041.1" />
+    <!--<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.0-preview3" />-->
   </ItemGroup>
-
-	
-	
-  <!--Not needed for the .NET5 RC1 release-->
-  <ItemGroup>
-	<FrameworkReference Condition="'$(TargetFramework)' == 'net5.0-windows10.0.19041.0'" Update="Microsoft.Windows.SDK.NET.Ref" RuntimeFrameworkVersion="10.0.19041.2-preview" />
-	<FrameworkReference Condition="'$(TargetFramework)' == 'net5.0-windows10.0.19041.0'" Update="Microsoft.Windows.SDK.NET.Ref" TargetingPackVersion="10.0.19041.2-preview" />
-  </ItemGroup>
-
+  
 </Project>
